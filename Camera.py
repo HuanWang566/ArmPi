@@ -19,6 +19,7 @@ class Camera:
         self.height = resolution[1]
         self.frame = None
         self.opened = False
+        self.camera_id = None
         #加载参数
         self.param_data = np.load(calibration_param_path + '.npz')
         
@@ -31,10 +32,12 @@ class Camera:
         self.th = threading.Thread(target=self.camera_task, args=(), daemon=True)
         self.th.start()
 
-    def camera_open(self):
+    def camera_open(self, camera_id = -1):
+        self.camera_id = camera_id
         try:
-            self.cap = cv2.VideoCapture(-1)
-            self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('Y', 'U', 'Y', 'V'))
+            self.cap = cv2.VideoCapture(camera_id)
+            # self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('Y', 'U', 'Y', 'V'))
+            self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
             self.cap.set(cv2.CAP_PROP_FPS, 30)
             self.cap.set(cv2.CAP_PROP_SATURATION, 40)
             self.opened = True
@@ -57,6 +60,7 @@ class Camera:
             try:
                 if self.opened and self.cap.isOpened():
                     ret, frame_tmp = self.cap.read()
+                    # print(str(self.camera_id) + " open " + str(ret))
                     if ret:
                         frame_resize = cv2.resize(frame_tmp, (self.width, self.height), interpolation=cv2.INTER_NEAREST)
                         self.frame = cv2.remap(frame_resize, self.mapx, self.mapy, cv2.INTER_LINEAR)
@@ -80,14 +84,58 @@ class Camera:
                 time.sleep(0.01)
 
 if __name__ == '__main__':
-    my_camera = Camera()
-    my_camera.camera_open()
+    # camera_test = Camera()
+    # for i in range(10):
+    #     camera_test.camera_open(i)
+        
+
+    my_camera1 = Camera()
+    my_camera1.camera_open(0)
+    my_camera2 = Camera()
+    my_camera2.camera_open(2)
+
     while True:
-        img = my_camera.frame
-        if img is not None:
-            cv2.imshow('img', img)
-            key = cv2.waitKey(1)
-            if key == 27:
-                break
-    my_camera.camera_close()
+        img1 = my_camera1.frame
+        img2 = my_camera2.frame
+        if img1 is not None:
+            cv2.imshow('img1', img1)
+        if img2 is not None:
+            cv2.imshow('img2', img2)
+
+        key = cv2.waitKey(1)
+        if key == 27:
+            break
+    my_camera1.camera_close()
+    my_camera2.camera_close()
     cv2.destroyAllWindows()
+
+
+# if __name__ == '__main__':
+#     while True:
+#         my_camera1 = Camera()
+#         my_camera1.camera_open(0)
+#         # print('preprare 1')
+#         while True:
+#             img1 = my_camera1.frame
+#             if img1 is not None:
+#                 # print('show img1')
+#                 cv2.imshow('img1', img1)
+#                 break
+#         my_camera1.camera_close()
+
+#         my_camera2 = Camera()
+#         my_camera2.camera_open(2)
+#         # print('prepare 2')
+#         while True:
+#             img2 = my_camera2.frame
+#             if img2 is not None:
+#                 # print('show img2')
+#                 cv2.imshow('img2', img2)
+#                 break
+#         my_camera2.camera_close()
+
+#         key = cv2.waitKey(1)
+#         if key == 27:
+#             break
+    
+#     cv2.destroyAllWindows()
