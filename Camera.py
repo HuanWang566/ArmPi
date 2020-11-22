@@ -19,6 +19,7 @@ class Camera:
         self.height = resolution[1]
         self.frame = None
         self.opened = False
+        self.camera_id = None
         #加载参数
         self.param_data = np.load(calibration_param_path + '.npz')
         
@@ -31,9 +32,10 @@ class Camera:
         self.th = threading.Thread(target=self.camera_task, args=(), daemon=True)
         self.th.start()
 
-    def camera_open(self, camera_info = -1):
+    def camera_open(self, camera_id = -1):
+        self.camera_id = camera_id
         try:
-            self.cap = cv2.VideoCapture(camera_info)
+            self.cap = cv2.VideoCapture(camera_id)
             # self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('Y', 'U', 'Y', 'V'))
             self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
             self.cap.set(cv2.CAP_PROP_FPS, 30)

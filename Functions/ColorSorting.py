@@ -9,13 +9,27 @@ import threading
 from LABConfig import *
 from ArmIK.Transform import *
 from ArmIK.ArmMoveIK import *
-from GlobalVariables import *
+# import GlobalVariables
 import HiwonderSDK.Board as Board
 from CameraCalibration.CalibrationConfig import *
 
 if sys.version_info.major == 2:
     print('Please run this program with python3!')
     sys.exit(0)
+
+
+# global variables
+camera_number = 2
+_stop = False
+__isRunning = False
+
+detect_color = []
+start_pick_up = []
+rotation_angle = []
+world_X, world_Y = [], []
+get_roi = []
+
+
 
 AK = ArmIK()
 
@@ -43,27 +57,36 @@ def setTargetColor(target_color):
 
 #找出面积最大的轮廓
 #参数为要比较的轮廓的列表
-def getAreaMaxContour(contours) :if __name__ == '__main__':
-    init()
-    start()
-    __target_color = ('red', 'green')
-    my_camera = Camera.Camera()
-    my_camera.camera_open()
-    while True:
-        img = my_camera.frame
-        if img is not None:
-            frame = img.copy()
-            Frame = run(frame)           
-            cv2.imshow('Frame', Frame)
-            key = cv2.waitKey(1)
-            if key == 27:
-                break
-    my_camera.camera_close()
-    cv2.destroyAllWindows()_area_temp
+def getAreaMaxContour(contours) :
+        contour_area_temp = 0
+        contour_area_max = 0
+        area_max_contour = None
+
+        for c in contours : #历遍所有轮廓
+            contour_area_temp = math.fabs(cv2.contourArea(c))  #计算轮廓面积
+            if contour_area_temp > contour_area_max:
+                contour_area_max = contour_area_temp
                 if contour_area_temp > 300:  #只有在面积大于300时，最大面积的轮廓才是有效的，以过滤干扰
                     area_max_contour = c
 
         return area_max_contour, contour_area_max  #返回最大的轮廓
+
+
+def global_variables_init():
+    global detect_color
+    global start_pick_up
+    global rotation_angle
+    global world_X
+    global world_Y 
+    global get_roi
+    global camera_number
+    for i in range(camera_number):
+        get_roi.append(False)
+        detect_color.append('None')
+        start_pick_up.append(False)
+        rotation_angle .append(0)
+        world_X.append(0)
+        world_Y.append(0)
 
 # 初始位置
 def initMove():
@@ -265,6 +288,7 @@ class Detector:
     def run(self, img):
         global get_roi
         global __isRunning
+        global __target_color
         global start_pick_up
         global rotation_angle
         global world_X, world_Y
@@ -276,8 +300,8 @@ class Detector:
         cv2.line(img, (0, int(img_h / 2)), (img_w, int(img_h / 2)), (0, 0, 200), 1)
         cv2.line(img, (int(img_w / 2), 0), (int(img_w / 2), img_h), (0, 0, 200), 1)
 
-        if not __isRunning:
-            return img
+        # if not __isRunning:
+        #     return img
 
         frame_resize = cv2.resize(img_copy, size, interpolation=cv2.INTER_NEAREST)
         frame_gb = cv2.GaussianBlur(frame_resize, (11, 11), 11)
@@ -392,19 +416,19 @@ if __name__ == '__main__':
     my_camera1.camera_open(0)
     my_camera2.camera_open(2)
 
-    detector1 = Detector()
-    detector2 = Detector() 
+    detector1 = Detector(0)
+    detector2 = Detector(1) 
     while True:
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            Frame1 = detector1.run(frame1, 0)  
+            Frame1 = detector1.run(frame1)  
             cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
             frame2 = img2.copy()
-            Frame2 = detector2.run(frame2, 1)       
+            Frame2 = detector2.run(frame2)       
             cv2.imshow('Frame2', Frame2)
             # cv2.imshow('Frame2', frame2)
 
