@@ -391,17 +391,20 @@ if __name__ == '__main__':
     my_camera2 = Camera.Camera()
     my_camera1.camera_open(0)
     my_camera2.camera_open(2)
+
+    detector1 = Detector()
+    detector2 = Detector() 
     while True:
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            Frame1 = run(frame1, 0)  
+            Frame1 = detector1.run(frame1, 0)  
             cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
             frame2 = img2.copy()
-            Frame2 = run(frame2, 1)       
+            Frame2 = detector2.run(frame2, 1)       
             cv2.imshow('Frame2', Frame2)
             # cv2.imshow('Frame2', frame2)
 
