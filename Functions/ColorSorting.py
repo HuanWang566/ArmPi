@@ -176,7 +176,8 @@ def move():
                             continue
                         servo2_angle = getAngle(world_X[i], world_Y[i], rotation_angle[i]) #计算夹持器需要旋转的角度
                         Board.setBusServoPulse(1, servo1 - 280, 500)  # 爪子张开
-                        Board.setBusServoPulse(2, servo2_angle, 500)
+                        if (world_X[i] * world_X[i] + world_Y[i] * world_Y[i]) < 1800:
+                            Board.setBusServoPulse(2, servo2_angle, 500)  # 注释掉这一行可以取消夹持器的角度旋转
                         time.sleep(0.5)
                     
                         if not __isRunning:
