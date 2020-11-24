@@ -52,7 +52,7 @@ def getAreaMaxContour(contours) :
         return area_max_contour, contour_area_max  #返回最大的轮廓
 
 # 夹持器夹取时闭合的角度
-servo1 = 500
+servo1 = 450
 
 # 初始位置
 def initMove():
@@ -154,8 +154,8 @@ def move():
     
     #放置坐标
     coordinate = {
-        'red':   (-33 + 0.5, -11 - 0.5,  1.5),
-        'green': ( 33 + 0.5, -11 - 0.5,  1.5),
+        'red':   (-25 + 0.5, -11 - 0.5,  1.5),
+        'green': ( 25 - 0.5, -11 - 0.5,  1.5),
         'blue':  (-15 + 0.5, 0 - 0.5,  1.5),
     }
     while True:
@@ -203,7 +203,7 @@ def move():
                     if not __isRunning:
                         continue                   
                     servo2_angle = getAngle(coordinate[detect_color][0], coordinate[detect_color][1], -90)
-                    Board.setBusServoPulse(2, servo2_angle, 500)
+                    # Board.setBusServoPulse(2, servo2_angle, 500)
                     time.sleep(0.5)
 
                     if not __isRunning:
