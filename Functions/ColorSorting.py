@@ -182,7 +182,7 @@ def move():
                     
                         if not __isRunning:
                             continue
-                        AK.setPitchRangeMoving((world_X[i], world_Y[i], 0.5), -90, -90, 0, 1000)
+                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.5), -90, -90, 0, 1000)
                         time.sleep(1.5)
 
                         if not __isRunning:
@@ -311,11 +311,11 @@ def run(img, img_idx):
              
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
             if img_idx == 0:
-                world_x -= 30.5 
-                world_y -= 27.5
+                world_x -= 23.5
+                world_y -= 28.5
             elif img_idx == 1:
-                world_x += 32.5
-                world_y -= 29.5
+                world_x += 22.5
+                world_y -= 25.7
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
@@ -380,14 +380,14 @@ if __name__ == '__main__':
     __target_color = ('red', 'green')
     my_camera1 = Camera.Camera()
     my_camera2 = Camera.Camera()
-    my_camera1.camera_open(0)
+    # my_camera1.camera_open(0)
     my_camera2.camera_open(2)
     while True:
-        img1 = my_camera1.frame
-        if img1 is not None:
-            frame1 = img1.copy()
-            Frame1 = run(frame1, 0)  
-            cv2.imshow('Frame1', Frame1)  
+        # img1 = my_camera1.frame
+        # if img1 is not None:
+        #     frame1 = img1.copy()
+        #     Frame1 = run(frame1, 0)  
+        #     cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
@@ -400,5 +400,5 @@ if __name__ == '__main__':
         if key == 27:
             break
     my_camera1.camera_close()
-    my_camera2.camera_close()
+    # my_camera2.camera_close()
     cv2.destroyAllWindows()
