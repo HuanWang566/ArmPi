@@ -182,7 +182,7 @@ def move():
                     
                         if not __isRunning:
                             continue
-                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.1), -90, -90, 0, 1000)
+                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.5), -90, -90, 0, 1000)
                         time.sleep(1.5)
 
                         if not __isRunning:
@@ -311,11 +311,11 @@ def run(img, img_idx):
              
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
             if img_idx == 0:
-                world_x -= 25.5
-                world_y -= 28
+                world_x -= 27.5
+                world_y -= 27
             elif img_idx == 1:
-                world_x += 19
-                world_y -= 25
+                world_x += 23
+                world_y -= 22.5
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
