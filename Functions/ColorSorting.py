@@ -154,9 +154,9 @@ def move():
     
     #放置坐标
     coordinate = {
-        'red':   ( 25 + 0.5, 0 - 0.5, 1.5),
-        'green': ( 25 + 0.5, 0 - 0.5,  1.5),
-        'blue':  ( 25 + 0.5, 0 - 0.5,  1.5),
+        'red':   ( 25 + 0.5, 0 - 0.5,  2),
+        'green': ( 25 + 0.5, 0 - 0.5,  2),
+        'blue':  ( 25 + 0.5, 0 - 0.5,  2),
     }
     while True:
         if __isRunning:        
@@ -165,7 +165,7 @@ def move():
                 #如果不给出运行时间参数，则自动计算，并通过结果返回
                 set_rgb(detect_color)
                 setBuzzer(0.1)
-                result = AK.setPitchRangeMoving((world_X, world_Y, 7), -90, -90, 0)  
+                result = AK.setPitchRangeMoving((world_X, world_Y, 9), -90, -90, 0)  
                 if result == False:
                     unreachable = True
                 else:
@@ -181,7 +181,7 @@ def move():
                     
                     if not __isRunning:
                         continue
-                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, 0, 1000)
+                    AK.setPitchRangeMoving((world_X, world_Y, 4), -90, -90, 0, 1000)
                     time.sleep(1.5)
 
                     if not __isRunning:
