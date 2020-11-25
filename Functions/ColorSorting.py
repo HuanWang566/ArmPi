@@ -181,7 +181,7 @@ def move():
                     
                     if not __isRunning:
                         continue
-                    AK.setPitchRangeMoving((world_X, world_Y, 2.5), -90, -90, 0, 1000)
+                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, 0, 1000)
                     time.sleep(1.5)
 
                     if not __isRunning:
@@ -253,6 +253,8 @@ roi = ()
 center_list = []
 last_x, last_y = 0, 0
 draw_color = range_rgb["black"]
+color_order = ['red','green','red','green']
+block_idx = 0
 def run(img):
     global roi
     global rect
@@ -267,6 +269,8 @@ def run(img):
     global world_X, world_Y
     global start_count_t1, t1
     global detect_color, draw_color, color_list
+    global block_idx
+
     
     img_copy = img.copy()
     img_h, img_w = img.shape[:2]
@@ -297,7 +301,9 @@ def run(img):
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
                 areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
                 if areaMaxContour is not None:
-                    if area_max > max_area:#找最大面积
+                    print(i)
+                    print(color_order[block_idx])
+                    if area_max > max_area and i == color_order[block_idx]:#找最大面积
                         max_area = area_max
                         color_area_max = i
                         areaMaxContour_max = areaMaxContour
@@ -341,6 +347,7 @@ def run(img):
                         center_list = []
                         count = 0
                         start_pick_up = True
+                        block_idx += 1
                 else:
                     t1 = time.time()
                     start_count_t1 = True
