@@ -153,8 +153,9 @@ def move():
     global detect_color
     global camera_number
     global block_idx
-    ajust_x = [27.5, -23]
-    ajust_y = [27, 20]
+    ajust_x = [27.5, -0]
+    ajust_y = [27, 0]
+    angle = [0, 120]
     
     #放置坐标
     # coordinate = {
@@ -190,14 +191,18 @@ def move():
                         if not __isRunning:
                             continue
                         servo2_angle = getAngle(world_X[i] + ajust_x[0], world_Y[i] + ajust_y[0], rotation_angle[i]) #计算夹持器需要旋转的角度
+                        print("angle0:" + str(servo2_angle))
+                        servo2_angle -= angle[i]
+                        print("angle1:" + str(servo2_angle))
                         Board.setBusServoPulse(1, servo1 - 280, 500)  # 爪子张开
                         if (world_X[i] * world_X[i] + world_Y[i] * world_Y[i]) < 1800:
+                            print("angle2:" + str(servo2_angle))
                             Board.setBusServoPulse(2, servo2_angle, 500)  # 注释掉这一行可以取消夹持器的角度旋转
                         time.sleep(0.5)
                     
                         if not __isRunning:
                             continue
-                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.5), -90, -90, 0, 1000)
+                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.7), -90, -90, 0, 1000)
                         time.sleep(1.5)
 
                         if not __isRunning:
@@ -330,10 +335,10 @@ def run(img, img_idx):
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
             if img_idx == 0:
                 world_x -= 27.5
-                world_y -= 27
+                world_y -= 24
             elif img_idx == 1:
-                world_x += 23
-                world_y -= 18
+                world_x += 21.5
+                world_y -= 21
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
