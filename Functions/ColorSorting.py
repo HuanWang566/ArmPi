@@ -331,7 +331,7 @@ def run(img, img_idx):
                 world_y -= 27
             elif img_idx == 1:
                 world_x += 23
-                world_y -= 22.5
+                world_y -= 20
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
