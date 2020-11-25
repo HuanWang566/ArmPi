@@ -155,7 +155,7 @@ def move():
     global block_idx
     ajust_x = [27.5, -0]
     ajust_y = [27, 0]
-    angle = [0, 120]
+    angle = [-100, 120]
     
     #放置坐标
     # coordinate = {
@@ -202,7 +202,7 @@ def move():
                     
                         if not __isRunning:
                             continue
-                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.7), -90, -90, 0, 1000)
+                        AK.setPitchRangeMoving((world_X[i], world_Y[i], -0.4), -90, -90, 0, 1000)
                         time.sleep(1.5)
 
                         if not __isRunning:
@@ -334,8 +334,8 @@ def run(img, img_idx):
              
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
             if img_idx == 0:
-                world_x -= 27.5
-                world_y -= 24
+                world_x -= 24.5
+                world_y -= 26
             elif img_idx == 1:
                 world_x += 21.5
                 world_y -= 21
