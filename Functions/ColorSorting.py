@@ -141,6 +141,7 @@ rect = [None, None]
 size = (640, 480)
 rotation_angle = [0, 0]
 world_X, world_Y = [0, 0], [0, 0]
+block_idx = 1
 def move():
     global _stop
     global get_roi
@@ -151,19 +152,31 @@ def move():
     global rotation_angle
     global detect_color
     global camera_number
+    global block_idx
     
     #放置坐标
+    # coordinate = {
+    #     'red':   ( 0 + 0.5,  20 - 0.5, 1.5),
+    #     'green': ( 5 + 0.5,  20 - 0.5,  1.5),
+    #     'blue':  (-15 + 0.5, 0 - 0.5,  1.5),
+    # }
+
     coordinate = {
-        'red':   ( 0 + 0.5,  20 - 0.5, 1.5),
-        'green': ( 0 + 0.5,  20 - 0.5,  1.5),
-        'blue':  (-15 + 0.5, 0 - 0.5,  1.5),
+        '1':  ( -9 + 0.5,  20 - 0.5,  1.5),
+        '2':  ( -4 + 0.5,  20 - 0.5,  1.5),
+        '3':  (  1 + 0.5,  20 - 0.5,  1.5),
+        '4':  (  6 + 0.5,  20 - 0.5,  1.5),
     }
+    # print(detect_color[1])
+    # print(coordinate[detect_color[1]][0])
     while True:
         if __isRunning:       
             for i in range(camera_number): 
                 if detect_color[i] != 'None' and start_pick_up[i]:  #如果检测到方块没有移动一段时间后，开始夹取
                     #移到目标位置，高度6cm, 通过返回的结果判断是否能到达指定位置
                     #如果不给出运行时间参数，则自动计算，并通过结果返回
+                    # print(detect_color[i])
+                    # print(coordinate[str(block_idx)][0])
                     set_rgb(detect_color)
                     setBuzzer(0.1)
                     result = AK.setPitchRangeMoving((world_X[i], world_Y[i], 7), -90, -90, 0)  
@@ -198,23 +211,23 @@ def move():
 
                         if not __isRunning:
                             continue
-                        result = AK.setPitchRangeMoving((coordinate[detect_color[i]][0], coordinate[detect_color[i]][1], 12), -90, -90, 0)   
+                        result = AK.setPitchRangeMoving((coordinate[str(block_idx)][0], coordinate[str(block_idx)][1], 12), -90, -90, 0)   
                         time.sleep(result[2]/1000)
                     
                         if not __isRunning:
                             continue                   
-                        servo2_angle = getAngle(coordinate[detect_color[i]][0], coordinate[detect_color[i]][1], -90)
+                        servo2_angle = getAngle(coordinate[str(block_idx)][0], coordinate[str(block_idx)][1], -90)
                         Board.setBusServoPulse(2, servo2_angle, 500)
                         time.sleep(0.5)
 
                         if not __isRunning:
                             continue
-                        AK.setPitchRangeMoving((coordinate[detect_color[i]][0], coordinate[detect_color[i]][1], coordinate[detect_color[i]][2] + 3), -90, -90, 0, 500)
+                        AK.setPitchRangeMoving((coordinate[str(block_idx)][0], coordinate[str(block_idx)][1], coordinate[str(block_idx)][2] + 3), -90, -90, 0, 500)
                         time.sleep(0.5)
                     
                         if not __isRunning:
                             continue                    
-                        AK.setPitchRangeMoving((coordinate[detect_color[i]]), -90, -90, 0, 1000)
+                        AK.setPitchRangeMoving((coordinate[str(block_idx)]), -90, -90, 0, 1000)
                         time.sleep(0.8)
 
                         if not __isRunning:
@@ -224,7 +237,7 @@ def move():
 
                         if not __isRunning:
                             continue 
-                        AK.setPitchRangeMoving((coordinate[detect_color[i]][0], coordinate[detect_color[i]][1], 12), -90, -90, 0, 800)
+                        AK.setPitchRangeMoving((coordinate[str(block_idx)][0], coordinate[str(block_idx)][1], 12), -90, -90, 0, 800)
                         time.sleep(0.8)
 
                         initMove()  # 回到初始位置
@@ -234,6 +247,9 @@ def move():
                         get_roi[i] = False
                         start_pick_up[i] = False
                         set_rgb(detect_color)
+                        block_idx += 1
+                        if block_idx == 5:
+                            block_idx = 1
             else:
                 if _stop:
                     _stop = False
