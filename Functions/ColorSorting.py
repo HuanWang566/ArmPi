@@ -195,7 +195,7 @@ def move():
                         servo2_angle -= angle[i]
                         print("angle1:" + str(servo2_angle))
                         Board.setBusServoPulse(1, servo1 - 280, 500)  # 爪子张开
-                        if (world_X[i] * world_X[i] + world_Y[i] * world_Y[i]) < 1800:
+                        if (world_X[i] * world_X[i] + world_Y[i] * world_Y[i]) < 1400:
                             print("angle2:" + str(servo2_angle))
                             Board.setBusServoPulse(2, servo2_angle, 500)  # 注释掉这一行可以取消夹持器的角度旋转
                         time.sleep(0.5)
@@ -334,11 +334,11 @@ def run(img, img_idx):
              
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
             if img_idx == 0:
-                world_x -= 24.5
-                world_y -= 26
+                world_x -= 27.5
+                world_y -= 29
             elif img_idx == 1:
-                world_x += 21.5
-                world_y -= 21
+                world_x += 20
+                world_y -= 23.5
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
