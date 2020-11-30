@@ -316,9 +316,9 @@ def run(img):
                         color_area_max = i
                         areaMaxContour_max = areaMaxContour
         if max_area > 2500:  # 有找到最大面积
+            set_conveyor_status('stop')
             rect = cv2.minAreaRect(areaMaxContour_max)
             box = np.int0(cv2.boxPoints(rect))
-            
             roi = getROI(box) #获取roi区域
             get_roi = True
             img_centerx, img_centery = getCenter(rect, roi, size, square_length)  # 获取木块中心坐标
@@ -326,8 +326,7 @@ def run(img):
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
-            cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, range_rgb[color_area_max], 1) #绘制中心点
+            cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, range_rgb[color_area_max], 1) #绘制中心点
             
             distance = math.sqrt(pow(world_x - last_x, 2) + pow(world_y - last_y, 2)) #对比上次坐标来判断是否移动
             last_x, last_y = world_x, world_y
@@ -393,6 +392,7 @@ def run(img):
                 # print('arm_satus:', get_arm_status(arm_id))
                 if arm_status == 'finish' and not get_arm_status(arm_id) == 'ready':
                     set_arm_status(arm_id, 'finish')
+                    set_conveyor_status('run')
 
     cv2.putText(img, "Color: " + detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
     return img

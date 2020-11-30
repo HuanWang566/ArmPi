@@ -13,3 +13,6 @@ def set_arm_status(arm_id, status):
 def get_arm_status(arm_id):
     arm_status = server.get_arm_status(arm_id)
     return arm_status
+
+def set_conveyor_status(status):
+    server.set_conveyor_status(status):
