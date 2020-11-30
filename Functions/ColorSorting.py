@@ -341,13 +341,15 @@ def run(img):
                         world_X, world_Y = np.mean(np.array(center_list).reshape(count, 2), axis=0)
                         center_list = []
                         count = 0
-                        # while True:
-                        #     car_pos = get_car_pos(0, 0)
-                        #     print(car_pos)
-                        #     if car_pos == 'arm2':
-                        #         break
-                        #     time.sleep(1)
-                        start_pick_up = True
+                        while True:
+                            # the second arm id is 1
+                            # the car id equals color-1, car 0 carries red(color_id 1) block, car 1 carris green(color_id 2) block
+                            car_pos = get_car_pos(1, color - 1)
+                            print(car_pos)
+                            if car_pos == 'arm2':
+                                start_pick_up = True
+                                break
+                            time.sleep(1)
                 else:
                     t1 = time.time()
                     start_count_t1 = True
