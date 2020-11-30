@@ -13,6 +13,9 @@ from ArmIK.ArmMoveIK import *
 import HiwonderSDK.Board as Board
 from CameraCalibration.CalibrationConfig import *
 
+
+arm_id = 1
+
 if sys.version_info.major == 2:
     print('Please run this program with python3!')
     sys.exit(0)
@@ -152,6 +155,7 @@ def move():
     global start_pick_up
     global rotation_angle
     global world_X, world_Y
+    global arm_id
     
     #放置坐标
     coordinate = {
@@ -234,6 +238,8 @@ def move():
                     get_roi = False
                     start_pick_up = False
                     set_rgb(detect_color)
+                    set_arm_status(arm_id, 'finish')
+                    print(get_arm_status(1))
         else:
             if _stop:
                 _stop = False
@@ -268,6 +274,10 @@ def run(img):
     global world_X, world_Y
     global start_count_t1, t1
     global detect_color, draw_color, color_list
+    global arm_id
+
+    # set_arm_status(arm_id, 'pick')
+    # print(get_arm_status(1))
     
     img_copy = img.copy()
     img_h, img_w = img.shape[:2]
@@ -344,7 +354,7 @@ def run(img):
                         while True:
                             # the second arm id is 1
                             # the car id equals color-1, car 0 carries red(color_id 1) block, car 1 carris green(color_id 2) block
-                            car_pos = get_car_pos(1, color - 1)
+                            car_pos = get_car_pos(arm_id, color - 1)
                             print(car_pos)
                             if car_pos == 'arm2':
                                 start_pick_up = True
@@ -386,6 +396,7 @@ if __name__ == '__main__':
     __target_color = ('red', 'green', 'blue')
     my_camera = Camera.Camera()
     my_camera.camera_open()
+    set_arm_status(arm_id, 'ready')
     while True:
         img = my_camera.frame
         if img is not None:
