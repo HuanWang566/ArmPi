@@ -6,6 +6,7 @@ import cv2
 import time
 import Camera
 import threading
+from Arm_cilent import *
 from LABConfig import *
 from ArmIK.Transform import *
 from ArmIK.ArmMoveIK import *
@@ -15,6 +16,8 @@ from CameraCalibration.CalibrationConfig import *
 if sys.version_info.major == 2:
     print('Please run this program with python3!')
     sys.exit(0)
+
+arm_id = 2
 
 AK = ArmIK()
 
@@ -157,13 +160,14 @@ def move():
     ajust_y = [27, 0]
     angle = [-100, 120]
     
-    #放置坐标
+    # 放置坐标
     # coordinate = {
     #     'red':   ( 0 + 0.5,  20 - 0.5, 1.5),
     #     'green': ( 5 + 0.5,  20 - 0.5,  1.5),
     #     'blue':  (-15 + 0.5, 0 - 0.5,  1.5),
     # }
 
+    # 目前默认只有4个方块，分别放置在四个不同的位置
     coordinate = {
         '1':  ( -9 + 0.5,  20 - 0.5,  1.5),
         '2':  ( -4 + 0.5,  20 - 0.5,  1.5),
@@ -257,6 +261,7 @@ def move():
                         block_idx += 1
                         if block_idx == 5:
                             block_idx = 1
+                        set_arm_status(arm_id, 'finish')
             else:
                 if _stop:
                     _stop = False
@@ -290,6 +295,7 @@ def run(img, img_idx):
     global world_X, world_Y
     global start_count_t1, t1
     global detect_color, draw_color, color_list
+    global arm_id
     
     img_copy = img.copy()
     img_h, img_w = img.shape[:2]
@@ -369,7 +375,13 @@ def run(img, img_idx):
                         world_X[img_idx], world_Y[img_idx] = np.mean(np.array(center_list[img_idx]).reshape(count[img_idx], 2), axis=0)
                         center_list[img_idx] = []
                         count[img_idx] = 0
-                        start_pick_up[img_idx] = True
+                        while True:
+                            car_pos = get_car_pos(arm_id, img_idx)
+                            print(car_pos)
+                            if car_pos == 'arm3':
+                                start_pick_up[img_idx] = True
+                                break
+                            time.sleep(1)
                 else:
                     t1[img_idx] = time.time()
                     start_count_t1[img_idx] = True
@@ -405,6 +417,7 @@ if __name__ == '__main__':
     my_camera2 = Camera.Camera()
     my_camera1.camera_open(0)
     my_camera2.camera_open(2)
+    set_arm_status(arm_id, 'ready')
     while True:
         img1 = my_camera1.frame
         if img1 is not None:
