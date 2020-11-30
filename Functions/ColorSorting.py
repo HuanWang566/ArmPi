@@ -19,6 +19,9 @@ if sys.version_info.major == 2:
 
 AK = ArmIK()
 
+arm_id = 0
+init_flag = True
+
 range_rgb = {
     'red':   (0, 0, 255),
     'blue':  (255, 0, 0),
@@ -271,6 +274,7 @@ def run(img):
     global start_count_t1, t1
     global detect_color, draw_color, color_list
     global block_idx
+    global init_flag
 
     
     img_copy = img.copy()
@@ -353,7 +357,16 @@ def run(img):
                         #     if car_pos == 'arm2':
                         #         break
                         #     time.sleep(1)
-                        start_pick_up = True
+                        if init_flag or get_conveyor_status() == 'stop':
+                            start_pick_up = True
+                            # 只用于第一次进行判断
+                            if init_flag:
+                                init_flag = False
+                            # 等待传动带重新开始运动（这时第二个机械臂已经完成了方块的拾取
+                            while True:
+                                if get_conveyor_status() == 'run':
+                                    break
+                                time.sleep(1)
                         block_idx += 1
                 else:
                     t1 = time.time()
