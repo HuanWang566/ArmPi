@@ -6,6 +6,7 @@ import cv2
 import time
 import Camera
 import threading
+from Arm_cilent import *
 from LABConfig import *
 from ArmIK.Transform import *
 from ArmIK.ArmMoveIK import *
@@ -346,6 +347,12 @@ def run(img):
                         world_X, world_Y = np.mean(np.array(center_list).reshape(count, 2), axis=0)
                         center_list = []
                         count = 0
+                        # while True:
+                        #     car_pos = get_car_pos(0, 0)
+                        #     print(car_pos)
+                        #     if car_pos == 'arm2':
+                        #         break
+                        #     time.sleep(1)
                         start_pick_up = True
                         block_idx += 1
                 else:
