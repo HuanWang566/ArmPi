@@ -145,6 +145,7 @@ size = (640, 480)
 rotation_angle = 0
 unreachable = False 
 world_X, world_Y = 0, 0
+arm_status = 'ready'
 def move():
     global rect
     global _stop
@@ -156,6 +157,7 @@ def move():
     global rotation_angle
     global world_X, world_Y
     global arm_id
+    global arm_status
     
     #放置坐标
     coordinate = {
@@ -168,6 +170,8 @@ def move():
             if detect_color != 'None' and start_pick_up:  #如果检测到方块没有移动一段时间后，开始夹取
                 #移到目标位置，高度6cm, 通过返回的结果判断是否能到达指定位置
                 #如果不给出运行时间参数，则自动计算，并通过结果返回
+                arm_status = 'startPick'
+                set_arm_status(arm_id, 'startPick')
                 set_rgb(detect_color)
                 setBuzzer(0.1)
                 result = AK.setPitchRangeMoving((world_X, world_Y, 7), -90, -90, 0)  
@@ -238,8 +242,7 @@ def move():
                     get_roi = False
                     start_pick_up = False
                     set_rgb(detect_color)
-                    set_arm_status(arm_id, 'finish')
-                    print(get_arm_status(1))
+                    arm_status = 'finish'
         else:
             if _stop:
                 _stop = False
@@ -386,6 +389,10 @@ def run(img):
             if not start_pick_up:
                 draw_color = (0, 0, 0)
                 detect_color = "None"
+                # 当检测不到方块后，再告知服务器抓取结束，而后AGV小车可以开始移动
+                # print('arm_satus:', get_arm_status(arm_id))
+                if arm_status == 'finish' and not get_arm_status(arm_id) == 'ready':
+                    set_arm_status(arm_id, 'finish')
 
     cv2.putText(img, "Color: " + detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
     return img
