@@ -257,7 +257,8 @@ roi = ()
 center_list = []
 last_x, last_y = 0, 0
 draw_color = range_rgb["black"]
-color_order = ['red','green','red','green']
+color_order = ['red','green']
+# color_order = ['green','green','green','green']
 block_idx = 0
 def run(img):
     global roi
@@ -306,9 +307,7 @@ def run(img):
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
                 areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
                 if areaMaxContour is not None:
-                    print(i)
-                    print(color_order[block_idx])
-                    if area_max > max_area and i == color_order[block_idx]:#找最大面积
+                    if area_max > max_area and (i == color_order[block_idx % 2] or max_area <= 2500):#找最大面积
                         max_area = area_max
                         color_area_max = i
                         areaMaxContour_max = areaMaxContour
@@ -357,17 +356,23 @@ def run(img):
                         #     if car_pos == 'arm2':
                         #         break
                         #     time.sleep(1)
-                        if init_flag or get_conveyor_status() == 'stop':
-                            start_pick_up = True
-                            # 只用于第一次进行判断
-                            if init_flag:
-                                init_flag = False
-                            # 等待传动带重新开始运动（这时第二个机械臂已经完成了方块的拾取
-                            while True:
-                                if get_conveyor_status() == 'run':
-                                    break
+                        while True:
+                            if get_conveyor_status() == 'stop' or init_flag:
+                                start_pick_up = True
+                                # 等待传动带重新开始运动（这时第二个机械臂已经完成了方块的拾取
+                                while True:
+                                    print('wait to pick')
+                                    if init_flag and get_conveyor_status() == 'stop':
+                                        print('break 1')
+                                        init_flag = False
+                                        break
+                                    elif not init_flag and get_conveyor_status() == 'run':
+                                        print('break 2')
+                                        break
                                 time.sleep(1)
-                        block_idx += 1
+                                block_idx += 1
+                                break
+                            time.sleep(1)
                 else:
                     t1 = time.time()
                     start_count_t1 = True
