@@ -18,6 +18,7 @@ if sys.version_info.major == 2:
     sys.exit(0)
 
 arm_id = 2
+arm_status = 'ready'
 
 AK = ArmIK()
 
@@ -156,9 +157,14 @@ def move():
     global detect_color
     global camera_number
     global block_idx
-    ajust_x = [27.5, -0]
-    ajust_y = [27, 0]
-    angle = [-100, 120]
+    global arm_status
+    global arm_id
+    ajust_x = [27, 0]
+    ajust_y = [27.5, -0]
+    angle = [120, -100]
+
+    
+    print("arm run", get_arm_status(arm_id))
     
     # 放置坐标
     # coordinate = {
@@ -184,6 +190,7 @@ def move():
                     #如果不给出运行时间参数，则自动计算，并通过结果返回
                     # print(detect_color[i])
                     # print(coordinate[str(block_idx)][0])
+                    set_arm_status(arm_id, 'startPick')
                     set_rgb(detect_color)
                     setBuzzer(0.1)
                     result = AK.setPitchRangeMoving((world_X[i], world_Y[i], 7), -90, -90, 0)  
@@ -261,7 +268,7 @@ def move():
                         block_idx += 1
                         if block_idx == 5:
                             block_idx = 1
-                        set_arm_status(arm_id, 'finish')
+                        arm_status = 'finish'
             else:
                 if _stop:
                     _stop = False
@@ -317,6 +324,7 @@ def run(img, img_idx):
     max_area = 0
     areaMaxContour_max = 0
     
+    # print('arm_satus1:', get_arm_status(arm_id))
     if not start_pick_up[img_idx]:
         for i in color_range:
             if i in __target_color:
@@ -339,10 +347,10 @@ def run(img, img_idx):
             img_centerx, img_centery = getCenter(rect[img_idx], roi[img_idx], size, square_length)  # 获取木块中心坐标
              
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
-            if img_idx == 0:
+            if img_idx == 1:
                 world_x -= 27.5
                 world_y -= 29
-            elif img_idx == 1:
+            elif img_idx == 0:
                 world_x += 20
                 world_y -= 23.5
             
@@ -376,6 +384,7 @@ def run(img, img_idx):
                         center_list[img_idx] = []
                         count[img_idx] = 0
                         while True:
+                            # TODO: image id shold equal to car id
                             car_pos = get_car_pos(arm_id, img_idx)
                             print(car_pos)
                             if car_pos == 'arm3':
@@ -405,6 +414,10 @@ def run(img, img_idx):
             if not start_pick_up[img_idx]:
                 draw_color[img_idx] = (0, 0, 0)
                 detect_color[img_idx] = "None"
+                # 当检测不到方块后，再告知服务器抓取结束，而后AGV小车可以开始移动
+                # print('arm_satus:', get_arm_status(arm_id))
+                if arm_status == 'finish' and not get_arm_status(arm_id) == 'ready':
+                    set_arm_status(arm_id, 'finish')
 
     cv2.putText(img, "Color: " + detect_color[img_idx], (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color[img_idx], 2)
     return img
@@ -422,8 +435,8 @@ if __name__ == '__main__':
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            Frame1 = run(frame1, 0)  
-            cv2.imshow('Frame1', Frame1)  
+            # Frame1 = run(frame1, 0)  
+            # cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
