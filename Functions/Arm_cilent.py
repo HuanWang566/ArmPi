@@ -15,4 +15,4 @@ def get_arm_status(arm_id):
     return arm_status
 
 def set_conveyor_status(status):
-    server.set_conveyor_status(status):
+    server.set_conveyor_status(status)
