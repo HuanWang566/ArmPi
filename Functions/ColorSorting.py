@@ -190,6 +190,7 @@ def move():
                     #如果不给出运行时间参数，则自动计算，并通过结果返回
                     # print(detect_color[i])
                     # print(coordinate[str(block_idx)][0])
+                    arm_status = 'startPick'
                     set_arm_status(arm_id, 'startPick')
                     set_rgb(detect_color)
                     setBuzzer(0.1)
