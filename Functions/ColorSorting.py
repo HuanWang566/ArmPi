@@ -161,7 +161,7 @@ def move():
     global arm_id
     ajust_x = [0, 0]
     ajust_y = [0, -0]
-    angle = [-100, 80]
+    angle = [0, 0]
 
     
     print("arm run", get_arm_status(arm_id))
@@ -353,8 +353,8 @@ def run(img, img_idx):
                 world_x -= 21.5
                 world_y -= 23
             elif img_idx == 0:
-                world_x += 20
-                world_y -= 23.5
+                world_x += 25
+                world_y -= 18
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
@@ -437,8 +437,8 @@ if __name__ == '__main__':
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            # Frame1 = run(frame1, 0)  
-            # cv2.imshow('Frame1', Frame1)  
+            Frame1 = run(frame1, 0)  
+            cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
