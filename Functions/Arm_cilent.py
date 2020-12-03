@@ -11,7 +11,7 @@ def get_arm_status(arm_id):
 
 def set_arm_status(arm_id, status):
     while True:
-        server.set_arm_status(arm_id, status)
+        server.set_arm_status(arm_id, status, 'arm2')
         if get_arm_status(arm_id) == status:
             break
 
