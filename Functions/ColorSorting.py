@@ -207,7 +207,7 @@ def move():
                         servo2_angle -= angle[i]
                         print("angle1:" + str(servo2_angle))
                         Board.setBusServoPulse(1, servo1 - 280, 500)  # 爪子张开
-                        if (world_X[i] * world_X[i] + world_Y[i] * world_Y[i]) < 1400:
+                        if (world_X[i] * world_X[i] + world_Y[i] * world_Y[i]) < 900:
                             print("angle2:" + str(servo2_angle))
                             Board.setBusServoPulse(2, servo2_angle, 500)  # 注释掉这一行可以取消夹持器的角度旋转
                         time.sleep(0.5)
