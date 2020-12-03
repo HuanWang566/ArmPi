@@ -159,9 +159,9 @@ def move():
     global block_idx
     global arm_status
     global arm_id
-    ajust_x = [27, 0]
-    ajust_y = [27.5, -0]
-    angle = [120, -100]
+    ajust_x = [0, 0]
+    ajust_y = [0, -0]
+    angle = [-100, 80]
 
     
     print("arm run", get_arm_status(arm_id))
@@ -348,9 +348,10 @@ def run(img, img_idx):
             img_centerx, img_centery = getCenter(rect[img_idx], roi[img_idx], size, square_length)  # 获取木块中心坐标
              
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
+
             if img_idx == 1:
-                world_x -= 27.5
-                world_y -= 29
+                world_x -= 21.5
+                world_y -= 23
             elif img_idx == 0:
                 world_x += 20
                 world_y -= 23.5
