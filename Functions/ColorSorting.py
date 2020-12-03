@@ -190,7 +190,7 @@ def move():
 
                     if not __isRunning:
                         continue
-                    Board.setBusServoPulse(1, servo1, 500)  #夹持器闭合
+                    Board.setBusServoPulse(1, servo1, 450)  #夹持器闭合
                     time.sleep(0.8)
 
                     if not __isRunning:
