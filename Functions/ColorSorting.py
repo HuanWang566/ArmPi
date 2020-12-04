@@ -437,7 +437,7 @@ if __name__ == '__main__':
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            Frame1 = run(frame1, 0)  
+            # Frame1 = run(frame1, 0)  
             # cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
