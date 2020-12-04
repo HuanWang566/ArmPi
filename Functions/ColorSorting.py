@@ -257,7 +257,7 @@ roi = ()
 center_list = []
 last_x, last_y = 0, 0
 draw_color = range_rgb["black"]
-color_order = ['red','green']
+color_order = ['green','red']
 # color_order = ['green','green','green','green']
 block_idx = 0
 def run(img):
