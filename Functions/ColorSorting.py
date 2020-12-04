@@ -418,8 +418,8 @@ def run(img, img_idx):
                 detect_color[img_idx] = "None"
                 # 当检测不到方块后，再告知服务器抓取结束，而后AGV小车可以开始移动
                 # print('arm_satus:', get_arm_status(arm_id))
-                if arm_status == 'finish' and not get_arm_status(arm_id) == 'ready':
-                    set_arm_status(arm_id, 'finish')
+                if arm_status == 'finish':
+                    get_set_arm_status_not(arm_id, 'ready', 'finish')
 
     cv2.putText(img, "Color: " + detect_color[img_idx], (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color[img_idx], 2)
     return img

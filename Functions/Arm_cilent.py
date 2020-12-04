@@ -14,3 +14,7 @@ def set_arm_status(arm_id, status):
 
 def get_arm_status(arm_id):
     return server.get_arm_status(arm_id)
+
+
+def get_set_arm_status_not(arm_id, not_status, status):
+    return server.get_set_arm_status_not(arm_id, not_status, status)
