@@ -24,3 +24,5 @@ def set_conveyor_status(status):
         if get_conveyor_status() == status:
             break
 
+def get_set_arm_status_not(arm_id, not_status, status):
+    return server.get_set_arm_status_not(arm_id, not_status, status)

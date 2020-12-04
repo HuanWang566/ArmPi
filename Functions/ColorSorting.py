@@ -395,9 +395,9 @@ def run(img):
                 detect_color = "None"
                 # 当检测不到方块后，再告知服务器抓取结束，而后AGV小车可以开始移动
                 # print('arm_satus:', get_arm_status(arm_id))
-                if arm_status == 'finish' and not get_arm_status(arm_id) == 'ready':
-                    set_arm_status(arm_id, 'finish')
-                    set_conveyor_status('run')
+                if arm_status == 'finish':
+                    if get_set_arm_status_not(arm_id, 'ready', 'finish'):
+                        set_conveyor_status('run')
 
     cv2.putText(img, "Color: " + detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
     return img
