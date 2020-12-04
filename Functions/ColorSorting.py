@@ -351,7 +351,7 @@ def run(img, img_idx):
 
             if img_idx == 1:
                 world_x -= 21.5
-                world_y -= 23
+                world_y -= 25
             elif img_idx == 0:
                 world_x += 25
                 world_y -= 18
@@ -438,7 +438,7 @@ if __name__ == '__main__':
         if img1 is not None:
             frame1 = img1.copy()
             Frame1 = run(frame1, 0)  
-            cv2.imshow('Frame1', Frame1)  
+            # cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
