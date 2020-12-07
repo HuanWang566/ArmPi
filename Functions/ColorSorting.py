@@ -192,7 +192,8 @@ def move():
                     # print(coordinate[str(block_idx)][0])
                     arm_status = 'startPick'
                     set_arm_status(arm_id, 'startPick')
-                    set_rgb(detect_color)
+                    set_rgb(detect_color[i])
+                    set_color_status(arm_id, detect_color[i]):
                     setBuzzer(0.1)
                     result = AK.setPitchRangeMoving((world_X[i], world_Y[i], 7), -90, -90, 0)  
                     if result == False:
@@ -265,7 +266,7 @@ def move():
                         detect_color[i] = 'None'
                         get_roi[i] = False
                         start_pick_up[i] = False
-                        set_rgb(detect_color)
+                        set_rgb(detect_color[i])
                         block_idx += 1
                         if block_idx == 5:
                             block_idx = 1
