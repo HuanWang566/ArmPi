@@ -164,7 +164,7 @@ def move():
     angle = [0, 0]
 
     
-    print("arm run", get_arm_status(arm_id))
+    # print("arm run", get_arm_status(arm_id))
     
     # 放置坐标
     # coordinate = {
@@ -191,9 +191,9 @@ def move():
                     # print(detect_color[i])
                     # print(coordinate[str(block_idx)][0])
                     arm_status = 'startPick'
-                    set_arm_status(arm_id, 'startPick')
+                    # set_arm_status(arm_id, 'startPick')
                     set_rgb(detect_color[i])
-                    set_color_status(arm_id, detect_color[i])
+                    # set_color_status(arm_id, detect_color[i])
                     setBuzzer(0.1)
                     result = AK.setPitchRangeMoving((world_X[i], world_Y[i], 7), -90, -90, 0)  
                     if result == False:
@@ -354,8 +354,8 @@ def run(img, img_idx):
                 world_x -= 21.5
                 world_y -= 25
             elif img_idx == 0:
-                world_x += 25
-                world_y -= 18
+                world_x += 24
+                world_y -= 20
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
@@ -388,9 +388,9 @@ def run(img, img_idx):
                         count[img_idx] = 0
                         while True:
                             # TODO: image id shold equal to car id
-                            car_pos = get_car_pos(arm_id, img_idx)
-                            print(car_pos)
-                            if car_pos == 'arm3':
+                            # car_pos = get_car_pos(arm_id, img_idx)
+                            # print(car_pos)
+                            if True: #car_pos == 'arm3':
                                 start_pick_up[img_idx] = True
                                 break
                             time.sleep(1)
@@ -419,8 +419,8 @@ def run(img, img_idx):
                 detect_color[img_idx] = "None"
                 # 当检测不到方块后，再告知服务器抓取结束，而后AGV小车可以开始移动
                 # print('arm_satus:', get_arm_status(arm_id))
-                if arm_status == 'finish':
-                    get_set_arm_status_not(arm_id, 'ready', 'finish')
+                # if arm_status == 'finish':
+                #     get_set_arm_status_not(arm_id, 'ready', 'finish')
 
     cv2.putText(img, "Color: " + detect_color[img_idx], (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color[img_idx], 2)
     return img
@@ -433,13 +433,13 @@ if __name__ == '__main__':
     my_camera2 = Camera.Camera()
     my_camera1.camera_open(0)
     my_camera2.camera_open(2)
-    set_arm_status(arm_id, 'ready')
+    # set_arm_status(arm_id, 'ready')
     while True:
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            # Frame1 = run(frame1, 0)  
-            # cv2.imshow('Frame1', Frame1)  
+            Frame1 = run(frame1, 0)  
+            cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
