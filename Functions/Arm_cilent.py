@@ -26,3 +26,10 @@ def set_conveyor_status(status):
 
 def get_set_arm_status_not(arm_id, not_status, status):
     return server.get_set_arm_status_not(arm_id, not_status, status)
+
+
+def get_color_status(arm_id):
+    return server.get_color_status(arm_id)
+    
+def set_color_status(arm_id, status):
+    server.set_color_status(arm_id, status)

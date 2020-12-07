@@ -173,6 +173,7 @@ def move():
                 arm_status = 'startPick'
                 set_arm_status(arm_id, 'startPick')
                 set_rgb(detect_color)
+                set_color_status(arm_id, detect_color)
                 setBuzzer(0.1)
                 result = AK.setPitchRangeMoving((world_X, world_Y, 7), -90, -90, 0)  
                 if result == False:
