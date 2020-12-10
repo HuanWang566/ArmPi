@@ -201,7 +201,7 @@ def move():
 
                     if not __isRunning:
                         continue
-                    result = AK.setPitchRangeMoving((coordinate[detect_color][0], coordinate[detect_color][1], 12), -90, -90, 0, 5000)   
+                    result = AK.setPitchRangeMoving((coordinate[detect_color][0], coordinate[detect_color][1], 12), -90, -90, 0)   
                     time.sleep(result[2]/1000)
                     
                     if not __isRunning:
