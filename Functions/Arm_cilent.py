@@ -94,6 +94,6 @@ def get_set_arm_status_not(arm_id, not_status, status):
 
 def get_set_arm_status_is(arm_id, is_status, status):
     url = url_root + 'get_set_arm_is_status?arm_id=' + str(arm_id) + \
-        str(arm_id) + '&status=' + status + "&is_status=" + is_status
+        '&status=' + status + "&is_status=" + is_status
     response, content = http.request(url, 'GET')
     return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS"
