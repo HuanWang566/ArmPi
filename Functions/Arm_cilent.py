@@ -1,35 +1,99 @@
-import xmlrpc.client
-import numpy as np
+import urllib.parse
+import httplib2
 
-server = xmlrpc.client.ServerProxy("http://192.168.10.71:50051", allow_none=True)
+# url = 'http://localhost:11000/get_arm_status?arm_id=1'
+url_root = 'http://localhost:11000/'
+http = httplib2.Http()
 
-def get_car_pos(arm_id, car_id):
-    return server.get_car_postion(car_id)
+# response, content = http.request(url, 'GET')
+# v_response = content.decode("utf-8").replace('encoding=\"gb2312\"','encoding=\"utf-8\"')
+# print(response)
+# print(content)
+# print(v_response)
+
+
+# define GET_ROBOT_ARM_STATUS_URL_PATH "/get_arm_status"
+# define GET_AGV_CAR_STATUS_URL_PATH   "/get_car_status"
+# define GET_CONVEYOR_STATUS_URL_PATH  "/get_conveyor_status"
+# define GET_BLOCK_COLOR_URL_PATH      "/get_block_color"
+
+# define SET_ROBOT_ARM_STATUS_URL_PATH "/set_arm_status"
+# define SET_AGV_CAR_STATUS_URL_PATH   "/set_car_status"
+# define SET_CONVEYOR_STATUS_URL_PATH  "/set_conveyor_status"
+# define SET_BLOCK_COLOR_URL_PATH      "/set_block_color"
+
+# define GET_SET_ROBOT_ARM_NOT_STATUS_URL_PATH  "/get_set_arm_not_status"
+# define GET_ROBOT_ARM_IS_STATUS_URL_PATH       "/get_set_arm_is_status"
 
 def get_arm_status(arm_id):
-    return server.get_arm_status(arm_id)
+    url = url_root + 'get_arm_status?arm_id=' + str(arm_id)
+    response, content = http.request(url, 'GET')
+    return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"')
 
-def set_arm_status(arm_id, status):
-    while True:
-        server.set_arm_status(arm_id, status, 'arm2')
-        if get_arm_status(arm_id) == status:
-            break
 
-def get_conveyor_status():
-    return server.get_conveyor_status()
+def get_car_pos(arm_id, car_id):
+    url = url_root + 'get_car_status?car_id=' + str(car_id)
+    response, content = http.request(url, 'GET')
+    return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"')
 
-def set_conveyor_status(status):
-    while True:
-        server.set_conveyor_status(status)
-        if get_conveyor_status() == status:
-            break
 
-def get_set_arm_status_not(arm_id, not_status, status):
-    return server.get_set_arm_status_not(arm_id, not_status, status)
+def get_conveyor_status(conveyor_id=1):
+    url = url_root + 'get_conveyor_status?arm_id=' + str(conveyor_id)
+    response, content = http.request(url, 'GET')
+    return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"')
 
 
 def get_color_status(arm_id):
-    return server.get_color_status(arm_id)
-    
-def set_color_status(arm_id, status):
-    server.set_color_status(arm_id, status)
+    url = url_root + 'get_block_color?arm_id=' + str(arm_id)
+    response, content = http.request(url, 'GET')
+    return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"')
+
+
+def set_arm_status(arm_id, status):
+    while True:
+        url = url_root + 'set_arm_status?arm_id=' + \
+            str(arm_id) + '&status=' + status
+        response, content = http.request(url, 'GET')
+        if content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS":
+            break
+
+
+def set_car_position(car_id, pos):
+    while True:
+        url = url_root + 'set_car_status?car_id=' + \
+            str(car_id) + '&status=' + pos
+        response, content = http.request(url, 'GET')
+        if content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS":
+            break
+
+
+def set_conveyor_status(status, conveyor_id=1):
+    while True:
+        url = url_root + 'set_conveyor_status?car_id=' + \
+            str(conveyor_id) + '&status=' + status
+        response, content = http.request(url, 'GET')
+        if content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS":
+            break
+
+
+def set_color_status(arm_id, color):
+    while True:
+        url = url_root + 'set_block_color?arm_id=' + \
+            str(arm_id) + '&color=' + color
+        response, content = http.request(url, 'GET')
+        if content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS":
+            break
+
+
+def get_set_arm_status_not(arm_id, not_status, status):
+    url = url_root + 'get_set_arm_not_status?arm_id=' + str(arm_id) + \
+        str(arm_id) + '&status=' + status + "&not_status=" + not_status
+    response, content = http.request(url, 'GET')
+    return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS"
+
+
+def get_set_arm_status_is(arm_id, is_status, status):
+    url = url_root + 'get_set_arm_is_status?arm_id=' + str(arm_id) + \
+        str(arm_id) + '&status=' + status + "&is_status=" + is_status
+    response, content = http.request(url, 'GET')
+    return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS"
