@@ -17,7 +17,7 @@ if sys.version_info.major == 2:
     print('Please run this program with python3!')
     sys.exit(0)
 
-arm_id = 2
+arm_id = 3
 arm_status = 'ready'
 
 AK = ArmIK()
@@ -388,7 +388,7 @@ def run(img, img_idx):
                         count[img_idx] = 0
                         while True:
                             # TODO: image id shold equal to car id
-                            car_pos = get_car_pos(arm_id, img_idx)
+                            car_pos = get_car_pos(arm_id, img_idx + 1)
                             print(car_pos)
                             if car_pos == 'arm3':
                                 start_pick_up[img_idx] = True
