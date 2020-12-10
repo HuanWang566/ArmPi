@@ -14,7 +14,7 @@ import HiwonderSDK.Board as Board
 from CameraCalibration.CalibrationConfig import *
 
 
-arm_id = 1
+arm_id = 2
 
 if sys.version_info.major == 2:
     print('Please run this program with python3!')
@@ -357,8 +357,8 @@ def run(img):
                         wait_time = 0
                         while True:
                             # the second arm id is 1
-                            # the car id equals color-1, car 0 carries red(color_id 1) block, car 1 carris green(color_id 2) block
-                            car_pos = get_car_pos(arm_id, color - 1)
+                            # the car id equals color, car 1 carries red(color_id 1) block, car 2 carris green(color_id 2) block
+                            car_pos = get_car_pos(arm_id, color)
                             print(car_pos)
                             wait_time += 1
                             if car_pos == 'arm2':
