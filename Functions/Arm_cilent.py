@@ -38,7 +38,7 @@ def get_car_pos(arm_id, car_id):
 
 
 def get_conveyor_status(conveyor_id=1):
-    url = url_root + 'get_conveyor_status?arm_id=' + str(conveyor_id)
+    url = url_root + 'get_conveyor_status?conveyor_id=' + str(conveyor_id)
     response, content = http.request(url, 'GET')
     return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"')
 
