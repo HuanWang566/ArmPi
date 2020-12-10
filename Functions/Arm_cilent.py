@@ -86,7 +86,7 @@ def set_color_status(arm_id, color):
 
 
 def get_set_arm_status_not(arm_id, not_status, status):
-    url = url_root + 'get_set_arm_not_status?arm_id=' + str(arm_id) + \
+    url = url_root + 'get_set_arm_not_status?arm_id=' + \
         str(arm_id) + '&status=' + status + "&not_status=" + not_status
     response, content = http.request(url, 'GET')
     return content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS"
