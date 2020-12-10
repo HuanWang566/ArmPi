@@ -69,7 +69,7 @@ def set_car_position(car_id, pos):
 
 def set_conveyor_status(status, conveyor_id=1):
     while True:
-        url = url_root + 'set_conveyor_status?car_id=' + \
+        url = url_root + 'set_conveyor_status?conveyor_id=' + \
             str(conveyor_id) + '&status=' + status
         response, content = http.request(url, 'GET')
         if content.decode("utf-8").replace('encoding=\"gb2312\"', 'encoding=\"utf-8\"') == "SUCCESS":
