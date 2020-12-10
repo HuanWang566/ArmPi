@@ -19,7 +19,7 @@ if sys.version_info.major == 2:
 
 AK = ArmIK()
 
-arm_id = 0
+arm_id = 1
 init_flag = True
 
 range_rgb = {
