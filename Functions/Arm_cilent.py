@@ -2,7 +2,7 @@ import urllib.parse
 import httplib2
 
 # url = 'http://localhost:11000/get_arm_status?arm_id=1'
-url_root = 'http://localhost:11000/'
+url_root = 'http://192.168.10.71:11000/'
 http = httplib2.Http()
 
 # response, content = http.request(url, 'GET')
