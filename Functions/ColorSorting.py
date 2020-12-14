@@ -158,9 +158,9 @@ def move():
     
     #放置坐标
     coordinate = {
-        'red':   ( 25 + 0.5, 0 - 0.5,  2),
-        'green': ( 25 + 0.5, 0 - 0.5,  2),
-        'blue':  ( 25 + 0.5, 0 - 0.5,  2),
+        'red':   ( 25 + 0.5, 0 - 0.5,  3.5),
+        'green': ( 25 + 0.5, 0 - 0.5,  3.5),
+        'blue':  ( 25 + 0.5, 0 - 0.5,  3.5),
     }
     while True:
         if __isRunning:        
@@ -185,7 +185,7 @@ def move():
                     
                     if not __isRunning:
                         continue
-                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, 0, 1000)
+                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, -0.5, 1000)
                     time.sleep(1.5)
 
                     if not __isRunning:
