@@ -351,11 +351,11 @@ def run(img, img_idx):
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
 
             if img_idx == 1:
-                world_x -= 24
-                world_y -= 20
+                world_x -= 23.1
+                world_y -= 20.7
             elif img_idx == 0:
                 world_x += 25
-                world_y -= 17.5
+                world_y -= 18.3
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
@@ -438,8 +438,8 @@ if __name__ == '__main__':
         img1 = my_camera1.frame
         if img1 is not None:
             frame1 = img1.copy()
-            # Frame1 = run(frame1, 0)  
-            # cv2.imshow('Frame1', Frame1)  
+            Frame1 = run(frame1, 0)  
+            cv2.imshow('Frame1', Frame1)  
             # cv2.imshow('Frame1', frame1)
         img2 = my_camera2.frame
         if img2 is not None:
