@@ -352,7 +352,7 @@ def run(img, img_idx):
 
             if img_idx == 1:
                 world_x -= 23.1
-                world_y -= 20.4
+                world_y -= 20.7
             elif img_idx == 0:
                 world_x += 25
                 world_y -= 18.3
