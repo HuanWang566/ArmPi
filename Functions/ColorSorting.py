@@ -185,7 +185,7 @@ def move():
                     
                     if not __isRunning:
                         continue
-                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, -0.5, 1000)
+                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, -0.8, 1000)
                     time.sleep(1.5)
 
                     if not __isRunning:
@@ -195,7 +195,7 @@ def move():
 
                     if not __isRunning:
                         continue
-                    Board.setBusServoPulse(2, 500, 500)
+                    Board.setBusServoPulse(2, 500, 450)
                     AK.setPitchRangeMoving((world_X, world_Y, 12), -90, -90, 0, 1000)  #机械臂抬起
                     time.sleep(1)
 
@@ -257,8 +257,8 @@ roi = ()
 center_list = []
 last_x, last_y = 0, 0
 draw_color = range_rgb["black"]
-color_order = ['green','red']
-# color_order = ['green','green','green','green']
+# color_order = ['green','red']
+color_order = ['green','red','green','red']
 block_idx = 0
 def run(img):
     global roi
@@ -307,7 +307,18 @@ def run(img):
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
                 areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
                 if areaMaxContour is not None:
-                    if area_max > max_area and (i == color_order[block_idx % 2] or max_area <= 2500):#找最大面积
+                    if area_max > max_area and (i == color_order[block_idx]):#找最大面积
+                        max_area = area_max
+                        color_area_max = i
+                        areaMaxContour_max = areaMaxContour
+            if max_area <= 2500 and i in __target_color:
+                frame_mask = cv2.inRange(frame_lab, color_range[i][0], color_range[i][1])  #对原图像和掩模进行位运算
+                opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6,6),np.uint8))  #开运算
+                closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6,6),np.uint8)) #闭运算
+                contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
+                areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
+                if areaMaxContour is not None:
+                    if area_max > max_area:#找最大面积
                         max_area = area_max
                         color_area_max = i
                         areaMaxContour_max = areaMaxContour
@@ -371,6 +382,8 @@ def run(img):
                                         break
                                 time.sleep(1)
                                 block_idx += 1
+                                if block_idx == 4:
+                                    block_idx = 0
                                 break
                             time.sleep(1)
                 else:
