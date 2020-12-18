@@ -351,11 +351,11 @@ def run(img, img_idx):
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
 
             if img_idx == 1:
-                world_x -= 23.1
-                world_y -= 20.7
+                world_x -= 23.7
+                world_y -= 22.3
             elif img_idx == 0:
                 world_x += 25
-                world_y -= 18.3
+                world_y -= 20.3
             
             cv2.drawContours(img, [box], -1, range_rgb[color_area_max], 2)
             cv2.putText(img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
