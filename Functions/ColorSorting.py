@@ -171,9 +171,9 @@ def move():
                 #移到目标位置，高度6cm, 通过返回的结果判断是否能到达指定位置
                 #如果不给出运行时间参数，则自动计算，并通过结果返回
                 arm_status = 'startPick'
-                set_arm_status(arm_id, 'startPick')
+                # set_arm_status(arm_id, 'startPick')
                 set_rgb(detect_color)
-                set_color_status(arm_id, detect_color)
+                # set_color_status(arm_id, detect_color)
                 setBuzzer(0.1)
                 result = AK.setPitchRangeMoving((world_X, world_Y, 7), -90, -90, 0)  
                 if result == False:
@@ -317,7 +317,7 @@ def run(img):
                         color_area_max = i
                         areaMaxContour_max = areaMaxContour
         if max_area > 2500:  # 有找到最大面积
-            set_conveyor_status('stop')
+            # set_conveyor_status('stop')
             rect = cv2.minAreaRect(areaMaxContour_max)
             box = np.int0(cv2.boxPoints(rect))
             roi = getROI(box) #获取roi区域
@@ -358,7 +358,8 @@ def run(img):
                         while True:
                             # the second arm id is 1
                             # the car id equals color, car 1 carries red(color_id 1) block, car 2 carris green(color_id 2) block
-                            car_pos = get_car_pos(arm_id, color)
+                            # car_pos = get_car_pos(arm_id, color)
+                            car_pos = 'arm2'
                             print(car_pos)
                             wait_time += 1
                             if car_pos == 'arm2':
@@ -396,9 +397,9 @@ def run(img):
                 detect_color = "None"
                 # 当检测不到方块后，再告知服务器抓取结束，而后AGV小车可以开始移动
                 # print('arm_satus:', get_arm_status(arm_id))
-                if arm_status == 'finish':
-                    if get_set_arm_status_not(arm_id, 'ready', 'finish'):
-                        set_conveyor_status('run')
+                # if arm_status == 'finish':
+                #     if get_set_arm_status_not(arm_id, 'ready', 'finish'):
+                #         set_conveyor_status('run')
 
     cv2.putText(img, "Color: " + detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
     return img
@@ -409,7 +410,7 @@ if __name__ == '__main__':
     __target_color = ('red', 'green', 'blue')
     my_camera = Camera.Camera()
     my_camera.camera_open()
-    set_arm_status(arm_id, 'ready')
+    # set_arm_status(arm_id, 'ready')
     while True:
         img = my_camera.frame
         if img is not None:
