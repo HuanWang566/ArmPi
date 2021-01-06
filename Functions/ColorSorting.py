@@ -185,7 +185,7 @@ def move():
                     
                     if not __isRunning:
                         continue
-                    AK.setPitchRangeMoving((world_X, world_Y, 3), -90, -90, -0.8, 1000)
+                    AK.setPitchRangeMoving((world_X, world_Y, 1.5), -90, -90, -0.8, 1000)
                     time.sleep(1.5)
 
                     if not __isRunning:
