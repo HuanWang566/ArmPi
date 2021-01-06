@@ -351,8 +351,8 @@ def run(img, img_idx):
             world_x, world_y = convertCoordinate(img_centerx, img_centery, size) #转换为现实世界坐标
 
             if img_idx == 1:
-                world_x -= 23.7
-                world_y -= 22.3
+                world_x -= 24
+                world_y -= 24.8
             elif img_idx == 0:
                 world_x += 25
                 world_y -= 20.3
