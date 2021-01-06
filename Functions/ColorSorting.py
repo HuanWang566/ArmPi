@@ -307,21 +307,21 @@ def run(img):
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
                 areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
                 if areaMaxContour is not None:
-                    if area_max > max_area and (i == color_order[block_idx]):#找最大面积
-                        max_area = area_max
-                        color_area_max = i
-                        areaMaxContour_max = areaMaxContour
-            if max_area <= 2500 and i in __target_color:
-                frame_mask = cv2.inRange(frame_lab, color_range[i][0], color_range[i][1])  #对原图像和掩模进行位运算
-                opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6,6),np.uint8))  #开运算
-                closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6,6),np.uint8)) #闭运算
-                contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
-                areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
-                if areaMaxContour is not None:
                     if area_max > max_area:#找最大面积
                         max_area = area_max
                         color_area_max = i
                         areaMaxContour_max = areaMaxContour
+            # if max_area <= 2500 and i in __target_color:
+            #     frame_mask = cv2.inRange(frame_lab, color_range[i][0], color_range[i][1])  #对原图像和掩模进行位运算
+            #     opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6,6),np.uint8))  #开运算
+            #     closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6,6),np.uint8)) #闭运算
+            #     contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  #找出轮廓
+            #     areaMaxContour, area_max = getAreaMaxContour(contours)  #找出最大轮廓
+            #     if areaMaxContour is not None:
+            #         if area_max > max_area:#找最大面积
+            #             max_area = area_max
+            #             color_area_max = i
+            #             areaMaxContour_max = areaMaxContour
         if max_area > 2500:  # 有找到最大面积
             rect = cv2.minAreaRect(areaMaxContour_max)
             box = np.int0(cv2.boxPoints(rect))
@@ -368,18 +368,19 @@ def run(img):
                         #         break
                         #     time.sleep(1)
                         while True:
-                            if get_conveyor_status() == 'stop' or init_flag:
+                            # if get_conveyor_status() == 'stop' or init_flag:
+                            if True:
                                 start_pick_up = True
                                 # 等待传动带重新开始运动（这时第二个机械臂已经完成了方块的拾取
-                                while True:
-                                    print('wait to pick')
-                                    if init_flag and get_conveyor_status() == 'stop':
-                                        print('break 1')
-                                        init_flag = False
-                                        break
-                                    elif not init_flag and get_conveyor_status() == 'run':
-                                        print('break 2')
-                                        break
+                                # while True:
+                                #     print('wait to pick')
+                                #     if init_flag and get_conveyor_status() == 'stop':
+                                #         print('break 1')
+                                #         init_flag = False
+                                #         break
+                                #     elif not init_flag and get_conveyor_status() == 'run':
+                                #         print('break 2')
+                                #         break
                                 time.sleep(1)
                                 block_idx += 1
                                 if block_idx == 4:
